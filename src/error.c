@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alechin <alechin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/02 17:38:00 by alechin           #+#    #+#             */
-/*   Updated: 2025/04/02 17:38:00 by alechin          ###   ########.fr       */
+/*   Created: 2025/04/02 18:14:14 by alechin           #+#    #+#             */
+/*   Updated: 2025/04/02 18:14:14 by alechin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include "libft.h"
 
-void	close_pipes(int *pipe)
+void	error2exit(char *message)
 {
-	return (0);
-}
-
-int	main(void)
-{
-	return (0);
 }

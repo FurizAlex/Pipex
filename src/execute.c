@@ -11,3 +11,23 @@
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	execute()
+{
+	return (0);
+}
+
+void	child()
+{
+	return (0);
+}
+
+void	parent()
+{
+	return (0);
+}
+
+void	get_path()
+{
+	return (0);
+}
