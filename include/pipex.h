@@ -18,4 +18,13 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 
+typedef struct s_pipex
+{
+	int	fd[2];
+	int	pid[2];
+	int	stat;
+}	t_pipex;
+
+void	error2exit(char *message);
+
 #endif

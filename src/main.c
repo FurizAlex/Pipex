@@ -12,9 +12,11 @@
 
 #include "pipex.h"
 
-void	close_pipes(int *pipe)
+void	close_pipes(t_pipex *fd)
 {
-	return (0);
+	close(fd[0]);
+	close(fd[1]);
+
 }
 
 int	main(void)

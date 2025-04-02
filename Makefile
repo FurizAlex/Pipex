@@ -22,7 +22,7 @@ SOURCE_DIRECTORY = src
 RM = rm -rf
 
 SOURCE = \
-	execute.c	main.c	\
+	execute.c	main.c	error.c\
 
 OBJECT = $(SOURCE:.c=.o)
 
