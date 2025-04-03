@@ -14,6 +14,6 @@
 
 void	error2exit(char *message)
 {
-	perror(message);
+	ft_printf("%s", message);
 	exit(EXIT_FAILURE);
 }

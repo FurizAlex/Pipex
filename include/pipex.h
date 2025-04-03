@@ -16,6 +16,7 @@
 # include "../libft/libft.h"
 # include <unistd.h>
 # include <fcntl.h>
+# include <stdlib.h>
 # include <sys/wait.h>
 
 typedef struct s_pipex
@@ -25,6 +26,12 @@ typedef struct s_pipex
 	int	stat;
 }	t_pipex;
 
-void	error2exit(char *message, int status);
+//Errors;
+void	error2exit(char *message);
+
+//Pipex;
+void	child(char **argv, int *fd, char **env);
+void	parent(char **argv, int *fd, char **env);
+void	free_pipex(char **paths);
 
 #endif

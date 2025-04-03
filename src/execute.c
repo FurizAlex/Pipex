@@ -12,80 +12,83 @@
 
 #include "pipex.h"
 
-void	execute(char **argv, char **env)
+static char	*get_path(char *prompt, char **env);
+
+static void	execute(char *argv, char **env)
 {
 	int		i;
-	char	*prompt;
-	char	**path;
+	char	**prompt;
+	char	*path;
 
 	i = -1;
-	prompt = ft_split(argv[i], ' ');
-	path = get_path(prompt, env[i]);
+	prompt = ft_split(argv, ' ');
+	path = get_path(prompt[0], env);
+	if (execve(path, prompt, env) == -1)
+		error2exit("Error: Problem in file\n");
 	if (!path)
 	{
 		while (prompt[i++])
 			free(prompt[i]);
 		free(prompt);
-		error2exit("Error: Path not found");
+		error2exit("Error: Path not found\n");
 	}
-	if (execve(path, argv[i], env[i]) == -1)
-		error2exit("Error: Problem in file");
 }
 
-void	child(char **argv, int *fd)
+void	child(char **argv, int *fd, char **env)
 {
 	int	infile;
 
 	infile = open(argv[1], O_RDONLY);
 	if (!infile || infile == -1)
-		error2exit("Error: Infile doesn't exist");
+		error2exit("Error: Infile doesn't exist\n");
 	dup2(infile, 0);
 	dup2(fd[1], 1);
 	close(fd[0]);
 	close(fd[1]);
 	close(infile);
-	return (0);
+	execute(argv[2], env);
 }
 
-void	parent(char **argv, int *fd)
+void	parent(char **argv, int *fd, char **env)
 {
 	int	outfile;
 
-	outfile = open(argv[3], O_WRONLY, O_TRUNC, O_CREAT);
+	outfile = open(argv[4], O_WRONLY, O_TRUNC, O_CREAT, 0644);
 	if (!outfile || outfile == -1)
-		error2exit("Error: Outfile doesn't exist");
+		error2exit("Error: Outfile doesn't exist\n");
 	dup2(fd[0], 0);
 	dup2(outfile, 1);
 	close(fd[0]);
 	close(fd[1]);
 	close(outfile);
-	return (0);
+	execute(argv[3], env);
 }
 
-char	get_path(char *prompt, char **env)
+static char	*get_path(char *prompt, char **env)
 {
 	int 	i;
 	char	*path;
 	char	**pathway;
 	char	*path_finder;
 
-	i = -1;
-	path = NULL;
-	pathway = ft_split(env[i] + 5, ":");
-	while (ft_strnstr(env[i], "PATH=", 5))
+	i = 0;
+	while (ft_strnstr(env[i], "PATH=", 5) == NULL)
 		i++;
-	while (pathway[++i] == NULL)
+	if (!env[i])
+		return (NULL);
+	path = NULL;
+	pathway = ft_split(env[i] + 5, ':');
+	i = -1;
+	while (pathway[++i])
 	{
 		path_finder = ft_strjoin(pathway[i], "/");
 		path = ft_strjoin(path_finder, prompt);
 		free(path_finder);
 		if (access(path, F_OK) == 0)
 			return (path);
-		if (!path)
-			break;
 		free(path);
 	}
-	free(pathway);
+	free_pipex(pathway);
 	return (NULL);
 }
 

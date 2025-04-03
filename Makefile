@@ -12,21 +12,21 @@
 
 NAME = pipex
 
+RM = rm -rf
 CC = cc
-
 CFLAGS = -Wall -Wextra -Werror -g -I$(HEADER_DIRECTORY)
+
+HEADER = $(HEADER_DIRECTORY)/pipex.h
 
 HEADER_DIRECTORY = include
 SOURCE_DIRECTORY = src
 
-RM = rm -rf
-
 SOURCE = \
-	execute.c	main.c	error.c\
+	src/execute.c	src/main.c		src/error.c		\
 
 OBJECT = $(SOURCE:.c=.o)
 
-LIBFT = $(LIBFT_PATH)/libft
+LIBFT = $(LIBFT_PATH)/libft.a
 LIBFT_PATH = libft
 
 DEFAULT = \033[1;39m
@@ -44,7 +44,7 @@ $(SOURCE_DIRECTORY)%.o: $(SOURCE_DIRECTORY)%.c
 $(NAME): $(OBJECT) $(LIBFT)
 	@echo "$(YELLOW)\nCompiling Pipex.c...$(RESET)"
 	@echo "$(YELLOW)\nCompiling Execute.c...$(RESET)"
-	@$(CC) $(CFLAGS) $(OBJECT) $(LIBFT) $(NAME)
+	@$(CC) $(CFLAGS) $(OBJECT) $(LIBFT) -o $(NAME)
 	@echo "$(GREEN)\nSuccessfully compiled pipex...$(RESET)"
 
 $(LIBFT):
