@@ -18,7 +18,8 @@ void	close_pipes(t_pipex *fd)
 	close(fd[1]);
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **env)
 {
-	return (0);
+	if (argc == 2)
+		return (0);
 }

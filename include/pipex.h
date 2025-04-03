@@ -25,6 +25,6 @@ typedef struct s_pipex
 	int	stat;
 }	t_pipex;
 
-void	error2exit(char *message);
+void	error2exit(char *message, int status);
 
 #endif
