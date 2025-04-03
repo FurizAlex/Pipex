@@ -16,7 +16,6 @@ void	close_pipes(t_pipex *fd)
 {
 	close(fd[0]);
 	close(fd[1]);
-
 }
 
 int	main(void)

@@ -14,6 +14,6 @@
 
 void	error2exit(char *message)
 {
-	ft_putendl_fd(message, STDERR_FILENO);
+	perror(message);
 	exit(EXIT_FAILURE);
 }
