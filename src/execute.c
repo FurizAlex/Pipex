@@ -27,7 +27,8 @@ static void	execute(char *argv, char **env)
 		error2exit("Error: Problem in file\n");
 	if (!path)
 	{
-		while (prompt[i++])
+		free(path);
+		while (prompt[++i])
 			free(prompt[i]);
 		free(prompt);
 		error2exit("Error: Path not found\n");
@@ -53,7 +54,7 @@ void	parent(char **argv, int *fd, char **env)
 {
 	int	outfile;
 
-	outfile = open(argv[4], O_WRONLY, O_TRUNC, O_CREAT, 0644);
+	outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (!outfile || outfile == -1)
 		error2exit("Error: Outfile doesn't exist\n");
 	dup2(fd[0], 0);
@@ -66,7 +67,7 @@ void	parent(char **argv, int *fd, char **env)
 
 static char	*get_path(char *prompt, char **env)
 {
-	int 	i;
+	int		i;
 	char	*path;
 	char	**pathway;
 	char	*path_finder;

@@ -20,11 +20,12 @@ HEADER = $(HEADER_DIRECTORY)/pipex.h
 
 HEADER_DIRECTORY = include
 SOURCE_DIRECTORY = src
+OBJECT_DIRECTORY = object
 
 SOURCE = \
 	src/execute.c	src/main.c		src/error.c		\
 
-OBJECT = $(SOURCE:.c=.o)
+OBJECT = $(SOURCE:$(SOURCE_DIRECTORY)/%.c=$(OBJECT_DIRECTORY)/%.o)
 
 LIBFT = $(LIBFT_PATH)/libft.a
 LIBFT_PATH = libft
@@ -37,39 +38,41 @@ CYAN = \033[1;36m
 
 all: $(NAME)
 
-$(SOURCE_DIRECTORY)%.o: $(SOURCE_DIRECTORY)%.c
-	@echo "$(YELLOW)\nInitializing Pipex...$(RESET)"
-	@$(CC) $(CFLAGS) -c $< -o $@
+$(OBJECT_DIRECTORY)/%.o: $(SOURCE_DIRECTORY)/%.c | $(OBJECT_DIRECTORY)
+	@echo "$(YELLOW)\nInitializing...$(RESET)"
+	@$(CC) $(CFLAGS) -c $< -o $@ -s
+
+$(OBJECT_DIRECTORY):
+	@mkdir -p $(OBJECT_DIRECTORY)
 
 $(NAME): $(OBJECT) $(LIBFT)
 	@echo "$(YELLOW)\nCompiling Pipex.c...$(RESET)"
 	@echo "$(YELLOW)\nCompiling Execute.c...$(RESET)"
-	@$(CC) $(CFLAGS) $(OBJECT) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJECT) $(LIBFT) -o $(NAME) -s
 	@echo "$(GREEN)\nSuccessfully compiled pipex...$(RESET)"
 
 $(LIBFT):
 	@echo "$(YELLOW)\nCompiling Libft.c...$(RESET)"
-	@make -C $(LIBFT_PATH) all
+	@make -C $(LIBFT_PATH) all -s
 
 clean:
 	@clear
-	@$(RM) $(OBJECT)
-	@make -C $(LIBFT_PATH) clean
+	@$(RM) $(OBJECT_DIRECTORY)
+	@make -C $(LIBFT_PATH) clean -s
 	@echo "$(CYAN)\nSuccessfully cleaned all object files...$(RESET)"
 
 fclean: clean
 	@clear
 	@$(RM) $(NAME)
-	@make -C $(LIBFT_PATH) fclean
+	@make -C $(LIBFT_PATH) fclean -s
 	@echo "$(CYAN)\nSuccessfully cleaned all object & executable files...$(RESET)"
+
+re: clear fclean all
 
 clear:
 	@clear
 
-re:
-	clear fclean all
-
 valgrind:
 	valgrind --leak-check=full ---show-leak-kinds=all --track-origin=yes
 
-.PHONY: all clean fclean re valgrind
+.PHONY: all clean fclean re clear valgrind
