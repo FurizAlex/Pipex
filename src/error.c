@@ -12,8 +12,8 @@
 
 #include "pipex.h"
 
-void	error2exit(char *message)
+void	error2exit(char *message, int status)
 {
-	ft_printf("%s", message);
-	exit(EXIT_FAILURE);
+	perror(message);
+	exit(status);
 }

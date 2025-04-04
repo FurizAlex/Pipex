@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <stdio.h>
 # include <sys/wait.h>
 
 typedef struct s_pipex
@@ -27,9 +28,10 @@ typedef struct s_pipex
 }	t_pipex;
 
 //Errors;
-void	error2exit(char *message);
+void	error2exit(char *message, int status);
 
 //Pipex;
+void	execute(char *argv, char **env);
 void	child(char **argv, int *fd, char **env);
 void	parent(char **argv, int *fd, char **env);
 void	free_pipex(char **paths);

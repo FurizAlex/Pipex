@@ -25,22 +25,24 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 5)
 	{
 		ft_printf("Error: Too many arguments\n");
-		return (1);
+		return (0);
 	}
 	if (pipe(pipex.fd) == -1)
-		error2exit("Error: failed to create pipe\n");
+		error2exit("Error: failed to create pipe\n", 1);
 	pipex.pid[0] = fork();
 	if (pipex.pid[0] == -1)
-		error2exit("Error: infile fork didn't work\n");
+		error2exit("Error: infile fork didn't work\n", 1);
 	if (pipex.pid[0] == 0)
 		child(argv, pipex.fd, env);
 	pipex.pid[1] = fork();
 	if (pipex.pid[1] == -1)
-		error2exit("Error: outfile fork didn't work\n");
+		error2exit("Error: outfile fork didn't work\n", 1);
 	if (pipex.pid[1] == 0)
 		parent(argv, pipex.fd, env);
 	close_pipes(&pipex);
 	waitpid(pipex.pid[0], NULL, 0);
 	waitpid(pipex.pid[1], &(pipex.stat), 0);
+	if (WIFEXITED(pipex.stat))
+		return (WEXITSTATUS(pipex.stat));
 	return (0);
 }
